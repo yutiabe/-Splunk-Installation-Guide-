@@ -1,0 +1,5 @@
+---
+- name: configure a dns server
+  hosts: dns.tilda.net
+  roles:
+          - dns_config

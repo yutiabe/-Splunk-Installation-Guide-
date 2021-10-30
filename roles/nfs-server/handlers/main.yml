@@ -1,0 +1,13 @@
+---
+# handlers file for nfs-server
+ 
+            - name: reload nfs
+              service:
+                    name:  nfs
+                    state: reloaded
+
+            - name: re-export shares
+              shell: exportfs -avr
+
+
+

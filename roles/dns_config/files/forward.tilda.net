@@ -1,0 +1,17 @@
+$TTL 1D
+@       IN SOA  dns.tilda.net.   root.tilda.net. (
+                                        0       ; serial
+                                        1D      ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                        3H )    ; minimum
+; DNS server information here
+@   IN  NS dns.tilda.net.
+@   IN  A  10.0.0.10
+
+
+dns                 IN   A  10.0.0.10
+ansible             IN   A  10.0.0.11
+nfs                 IN   A  10.0.0.12
+workstation         IN   A  10.0.0.13
+www                 IN   A  10.0.0.14

@@ -1,0 +1,53 @@
+---
+# tasks file for dns_config---
+          - name: install bind-chroot
+            dnf:
+                    name: bind-chroot
+                    state: present
+
+
+          - name: create forward.tilda.net 
+            copy:
+                    dest: /var/named/forward.tilda.net
+                    src: forward.tilda.net
+            notify: restart named-chroot
+
+
+          
+          - name: allow dns service
+            firewalld:
+                    service: dns
+                    state: enabled
+                    immediate: yes
+                    permanent: yes 
+          
+          - name: create reverse.tilda.net
+            copy:
+                    dest: /var/named/reverse.tilda.net
+                    src: reverse.tilda.net
+            notify: restart named-chroot
+
+
+          - name: create /etc/named.conf
+            copy:
+                    dest: /etc/named.conf
+                    src: named.conf
+            notify: restart named-chroot
+
+          - name: masked named.serveice
+            service:
+                    name: named
+                    masked: yes
+
+
+          - name: depoly /etc/resolv.conf
+            copy:
+                    dest: /etc/resolv.conf
+                    src: resolv.conf
+            notify: reload NetworkManager
+
+          - name: start and enable named-chroot
+            service:
+                    name: named-chroot
+                    state: started
+                    enabled: yes

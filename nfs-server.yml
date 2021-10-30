@@ -1,0 +1,6 @@
+---
+- name: configure a dns server
+  hosts: nfs.tilda.net
+  roles:
+          - nfs-server
+

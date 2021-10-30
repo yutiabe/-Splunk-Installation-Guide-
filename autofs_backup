@@ -1,0 +1,50 @@
+---
+- hosts: dns.tilda.net
+  tasks:
+    - name: install nfs-utils
+      yum: 
+         name:  autofs
+         state: present
+
+    - name: create a mount point
+      file:  
+         path:  /mnt/data
+         state: directory
+         mode: '0775'
+      notify: restart autofs         
+
+
+    - name: configure /etc/auto.master
+      lineinfile:
+         path: /etc/auto.master
+         line:   /-    /etc/auto.dynamic
+         regex: "/etc/auto.dynamic"
+      notify: restart autofs
+            
+
+         
+         
+
+    - name: configure /etc/auto.dynamic
+      lineinfile:
+         path: /etc/auto.dynamic
+         line:   /mnt/data    10.0.0.12:/shares 
+         regex: "/mnt/data"
+         create: yes
+      notify: restart autofs
+
+    - name: enable and start autofs
+      service:
+         name:  autofs
+         state: started
+         enabled: yes
+
+
+
+
+
+
+
+
+
+

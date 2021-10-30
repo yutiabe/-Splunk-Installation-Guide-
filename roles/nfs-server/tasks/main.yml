@@ -1,0 +1,56 @@
+---
+# tasks file for nfs-server
+          - name: install nfs-utils and rpcbind
+            dnf:
+                    name: nfs-utils, rpcbind
+                    state: present
+
+          - name: creat a share directory
+            file:
+                    path: /shares
+                    state: directory
+                    mode: '0775'
+                    owner: ansible
+
+          - name: enable nfs-server and rpcbind
+            service:
+                    name: nfs-server
+                    state: started
+                    enabled: yes
+
+          - name: enable nfs-utils and rpcbind
+            service:
+                    name: rpcbind
+                    state: started
+                    enabled: yes
+
+
+          - name: allow nfs through firewalld
+            firewalld:
+                    service: nfs
+                    immediate: yes
+                    permanent: yes
+                    state: enabled
+
+          - name: allow rpc-bind through firewalld
+            firewalld:
+                    service: rpc-bind
+                    immediate: yes
+                    permanent: yes
+                    state: enabled
+
+
+          - name: copy /etc/export files
+            copy:
+                    src: exports.txt 
+                    dest: /etc/exports
+                    mode: '0775'
+            notify: reload nfs
+            notify: re-export shares
+
+                    
+                    
+
+                    
+
+
